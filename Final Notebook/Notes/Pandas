@@ -1,0 +1,112 @@
+##PANDAS Important Commands
+
+pd.Series([100,'foo',599],['a','b','c'])
+.index
+.loc[['a','b']]
+.iloc[index]
+'a' in ser
+ser * 2
+ser[['a','b']] ** 2
+d = {'one' : pd.Series([100,200,330], index= ['a','b','c'])
+     'two' : pd.Series([111,222,333], index=['a','b','c'])}
+
+df = pd.DataFrame(d)
+.columns
+pd.DataFrame(d, index=[])
+pd.DataFrame(d, index=[], colums=[])
+
+data=[{'a':1, 'b':2},{'c':3, 'd':4}]
+pd.DataFrame(data)
+
+pd.DataFrame(data, index=[], colums=[])
+
+df['d'] = df['a'] * df['b']
+
+df['flag'] = df['a'] > 230
+
+d = df.pop('d')
+
+del df['d']
+
+df.insert(2,'copy_of_a', df['a'])
+
+#Inserting Dataset
+
+m = pd.read_csv('path_of_file', sep=',')
+type(m)
+m.head()
+
+del m['value']
+row_0 = m.iloc[0]
+'value' in row_0
+row_0 = row_0.rename('first_row')
+row_0.name
+
+.colums
+.head
+.describe()
+.mean()
+.min()
+.max()
+.std()
+.mode()
+filter = m['value'] > 5
+filter.any()
+.all()
+.shape
+
+.isnull().any()  -- find any null value
+.dropna() -- drop null values
+
+#visualizations
+
+%matplotlib inline
+ratings.hist(column='value', figsize=(row,cols))
+.boxboxplot(colums=='value', figsize=(row,cols))
+.value_counts()
+.plot(kind='bar', figsize=(row,cols))
+
+
+#filters by selecting rows 
+filter = m['value'] >= 4.0
+m[filter][30:40]
+
+ratings_count = ratings[['movieId','rating']].groupby('rating').count()
+.mean()
+.head()
+.tail()
+
+#merging DataFrames
+t = m.merge(value, on='value', how='inner')
+how='outer'
+how='full'
+More examples: http://pandas.pydata.org/pandas-docs/stable/merging.html
+
+avg_ratings = ratings.groupby('movieId', as_index=False).mean()
+del avg_ratings['userId']
+
+is_comedy = box_office['genres'].str.contains('Comedy')
+box_office[is_comedy & is_highly_rated][-5:]
+
+#vectorized String Operations
+movie_genres = movies['genres'].str.split('|', expand=True)
+movie_genres['isComedy'] = movies['genres'].str.contains('Comedy')
+
+movies['year'] = movies['title'].str.extract('.*\((.*)\).*', expand=True)
+
+#timestamps
+tags['parsed_time'] = pd.to_datetime(tags['timestamp'], unit='s')
+
+greater_than_t = tags['parsed_time'] > '2015-02-01'
+selected_rows = tags[greater_than_t]
+
+tags.sort_values(by='parsed_time', ascending=True)[:10]
+
+average_rating = ratings[['movieId','rating']].groupby('movieId', as_index=False).mean()
+joined = movies.merge(average_rating, on='movieId', how='inner')
+.corr()
+yearly_average = joined[['year','rating']].groupby('year', as_index=False).mean()
+yearly_average[-20:].plot(x='year', y='rating', figsize=(15,10), grid=True)
+
+
+
